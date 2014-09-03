@@ -59,21 +59,6 @@ bool ModelViewer::init()
     return true;
 }
 
-
-void ModelViewer::menuCloseCallback(Ref* pSender)
-{
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
-    MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.","Alert");
-    return;
-#endif
-
-    Director::getInstance()->end();
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-    exit(0);
-#endif
-}
-
 void ModelViewer::loadModel( const std::string &filePath )
 {
     Sprite3D *sprite = Sprite3D::create(filePath);

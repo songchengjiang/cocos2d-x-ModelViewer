@@ -64,6 +64,13 @@ void ModelViewer::loadModel( const std::string &filePath )
     Sprite3D *sprite = Sprite3D::create(filePath);
     if (sprite)
     {
+        auto animation = Animation3D::create(filePath);
+        if (animation)
+        {
+            auto animate = Animate3D::create(animation);
+            sprite->runAction(RepeatForever::create(animate));
+        }
+
         AABB aabb = sprite->getAABB();
         Vec3 corners[8];
         aabb.getCorners(corners);
@@ -71,7 +78,6 @@ void ModelViewer::loadModel( const std::string &filePath )
         _orginCenter = aabb.getCenter();
         _orginDistance = radius;
         resetCamera();
-
         sprite->setCameraMask(2);
         _layer->addChild(sprite);
     }

@@ -74,9 +74,18 @@ void ModelViewer::loadModel( const std::string &filePath )
         AABB aabb = sprite->getAABB();
         Vec3 corners[8];
         aabb.getCorners(corners);
-        float radius = (corners[0] - corners[5]).length();
-        _orginCenter = aabb.getCenter();
-        _orginDistance = radius;
+        //temporary method, replace it
+        if (abs(corners[3].x) == 99999.0f && abs(corners[3].y) == 99999.0f && abs(corners[3].z) == 99999.0f)
+        {
+            _orginCenter = Vec3(0.0f, 0.0f, 0.0f);
+            _orginDistance = 100.0f;
+        }
+        else
+        {
+            float radius = (corners[0] - corners[5]).length();
+            _orginCenter = aabb.getCenter();
+            _orginDistance = radius;
+        }
         resetCamera();
         sprite->setCameraMask(2);
         _layer->addChild(sprite);

@@ -3,7 +3,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LocalDebuggerWorkingDirectory>$(ProjectDir)..\res</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>..\cocos2d\tests\cpp-tests\Resources\Sprite3DTest\tortoise.c3b</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>../cocos2d/tests/cpp-tests/Resources/Sprite3DTest/tortoise.c3b</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LocalDebuggerWorkingDirectory>$(ProjectDir)..\res</LocalDebuggerWorkingDirectory>

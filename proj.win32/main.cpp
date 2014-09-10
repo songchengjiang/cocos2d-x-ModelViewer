@@ -17,7 +17,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     std::string filePath;
     for (auto iter : str)
     {
-		if (iter == '\\') iter = '/';
+        if (iter == '\\') iter = '/';
         filePath.push_back(iter);
     }
 

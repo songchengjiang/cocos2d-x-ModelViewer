@@ -4,25 +4,9 @@
 
 USING_NS_CC;
 
-int APIENTRY _tWinMain(HINSTANCE hInstance,
-                       HINSTANCE hPrevInstance,
-                       LPTSTR    lpCmdLine,
-                       int       nCmdShow)
+int main(int argc, char *argv[])
 {
-    UNREFERENCED_PARAMETER(hPrevInstance);
-    UNREFERENCED_PARAMETER(lpCmdLine);
-
-    // create the application instance
-    std::wstring str(lpCmdLine);
-    std::string filePath;
-    for (auto iter : str)
-    {
-        if (iter == '\\') iter = '/';
-        filePath.push_back(iter);
-    }
-
-    if (filePath.empty()) return -1;
-
-    AppDelegate app(filePath);
+    if (argc < 2) return -1;
+    AppDelegate app(argv[1]);
     return Application::getInstance()->run();
 }

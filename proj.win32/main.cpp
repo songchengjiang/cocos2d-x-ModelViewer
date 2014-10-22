@@ -4,15 +4,13 @@
 
 USING_NS_CC;
 
-int APIENTRY _tWinMain(HINSTANCE hInstance,
-                       HINSTANCE hPrevInstance,
-                       LPTSTR    lpCmdLine,
-                       int       nCmdShow)
+int main(int argc, char *argv[])
 {
-    UNREFERENCED_PARAMETER(hPrevInstance);
-    UNREFERENCED_PARAMETER(lpCmdLine);
-
-    // create the application instance
-    AppDelegate app;
+    if (argc < 2) return -1;
+    std::string path = argv[1];
+    for (std::string::iterator iter = path.begin(); iter != path.end(); ++iter){
+        if (*iter == '\\') *iter = '/';
+    }
+    AppDelegate app(path);
     return Application::getInstance()->run();
 }

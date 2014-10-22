@@ -10,6 +10,8 @@ Scene* ModelViewer::createScene(const std::string &filePath)
     // 'layer' is an autorelease object
     auto layer = ModelViewer::create();
     layer->loadModel(filePath);
+    layer->setCamera();
+    layer->resetCamera();
 
     // add layer as a child to scene
     scene->addChild(layer);
@@ -28,9 +30,6 @@ bool ModelViewer::init()
         return false;
     }
 
-    Size visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
     auto listenertouch = EventListenerTouchAllAtOnce::create();
     listenertouch->onTouchesMoved = CC_CALLBACK_2(ModelViewer::onTouchsMovedThis, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listenertouch, this);
@@ -48,14 +47,6 @@ bool ModelViewer::init()
     _layer->retain();
     addChild(_layer);
 
-    _camera = Camera::createPerspective(60.0f, (GLfloat)visibleSize.width/visibleSize.height, 1.0f, 10000.0f);
-    _camera->setCameraFlag(CameraFlag::USER1);
-    _camera->setPosition3D(Vec3(0.0f, 0.0f, 10.0f));
-    _camera->lookAt(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));
-    _camera->retain();
-    _layer->addChild(_camera);
-
-    _layer->setCameraMask(2);
     return true;
 }
 
@@ -86,8 +77,7 @@ void ModelViewer::loadModel( const std::string &filePath )
             _orginCenter = aabb.getCenter();
             _orginDistance = radius;
         }
-        resetCamera();
-        sprite->setCameraMask(2);
+        sprite->setCameraMask((unsigned short)CameraFlag::USER1);
         _layer->addChild(sprite);
     }
 
@@ -233,4 +223,16 @@ void ModelViewer::resetCamera()
     _rotation.set(0.0f, 0.0f, 0.0f, 1.0f);
     _camera->setPosition3D(_orginCenter + Vec3(0.0f, 0.0f,  _orginDistance));
     _camera->lookAt(_orginCenter, Vec3(0.0f, 1.0f, 0.0f));
+}
+
+void ModelViewer::setCamera()
+{
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    _camera = Camera::createPerspective(60.0f, (GLfloat)visibleSize.width/visibleSize.height, 1.0f, _orginDistance * 5.0f);
+    _camera->setCameraFlag(CameraFlag::USER1);
+    _camera->setPosition3D(Vec3(0.0f, 0.0f, 10.0f));
+    _camera->lookAt(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));
+    _camera->retain();
+    _camera->setCameraMask((unsigned short)CameraFlag::USER1);
+    _layer->addChild(_camera);
 }

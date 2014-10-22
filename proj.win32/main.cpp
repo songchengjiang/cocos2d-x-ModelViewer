@@ -4,9 +4,15 @@
 
 USING_NS_CC;
 
-int main(int argc, char *argv[])
+int APIENTRY _tWinMain(HINSTANCE hInstance,
+                       HINSTANCE hPrevInstance,
+                       LPTSTR    lpCmdLine,
+                       int       nCmdShow)
 {
-    if (argc < 2) return -1;
-    AppDelegate app(argv[1]);
+    UNREFERENCED_PARAMETER(hPrevInstance);
+    UNREFERENCED_PARAMETER(lpCmdLine);
+
+    // create the application instance
+    AppDelegate app;
     return Application::getInstance()->run();
 }

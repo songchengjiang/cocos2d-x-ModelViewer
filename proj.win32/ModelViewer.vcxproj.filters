@@ -18,7 +18,7 @@
     <ClCompile Include="..\src\AppDelegate.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ModelViewerScene.cpp">
+    <ClCompile Include="..\src\HelloWorldScene.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,7 +29,7 @@
     <ClInclude Include="..\src\AppDelegate.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ModelViewerScene.h">
+    <ClInclude Include="..\src\HelloWorldScene.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

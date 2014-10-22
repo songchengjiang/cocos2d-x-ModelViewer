@@ -1,4 +1,4 @@
-#include "ModelViewerScene.h"
+#include "HelloWorldScene.h"
 
 USING_NS_CC;
 
@@ -6,7 +6,7 @@ Scene* ModelViewer::createScene(const std::string &filePath)
 {
     // 'scene' is an autorelease object
     auto scene = Scene::create();
-    
+
     // 'layer' is an autorelease object
     auto layer = ModelViewer::create();
     layer->loadModel(filePath);
@@ -27,7 +27,7 @@ bool ModelViewer::init()
     {
         return false;
     }
-    
+
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 

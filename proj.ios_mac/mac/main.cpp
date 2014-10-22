@@ -29,7 +29,6 @@ USING_NS_CC;
 
 int main(int argc, char *argv[])
 {
-    if (argc < 2) return -1;
-    AppDelegate app(argv[1]);
+    AppDelegate app;
     return Application::getInstance()->run();
 }

@@ -1,11 +1,9 @@
 #include "AppDelegate.h"
-#include "ModelViewerScene.h"
+#include "HelloWorldScene.h"
 
 USING_NS_CC;
 
-AppDelegate::AppDelegate(const std::string &filePath)
-    : _modelFilePath(filePath)
-{
+AppDelegate::AppDelegate() {
 
 }
 
@@ -40,7 +38,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0 / 60);
 
     // create a scene. it's an autorelease object
-    auto scene = ModelViewer::createScene(_modelFilePath);
+    auto scene = HelloWorld::createScene();
 
     // run
     director->runWithScene(scene);

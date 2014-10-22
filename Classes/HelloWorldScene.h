@@ -13,7 +13,7 @@ public:
     virtual bool init();  
 
     void loadModel(const std::string &filePath);
-    
+
     // implement the "static create()" method manually
     CREATE_FUNC(ModelViewer);
 

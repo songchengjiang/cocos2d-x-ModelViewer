@@ -1,5 +1,5 @@
 ## ModelViewer version 0.1 ##
-It is for cocos2d-x after version v3.3 rc0
+It is for cocos2d-x after version v3.3
 
 View .c3t/.c3b Model
 

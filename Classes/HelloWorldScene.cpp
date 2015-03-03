@@ -1,15 +1,50 @@
 #include "HelloWorldScene.h"
 
 USING_NS_CC;
+//include for particle
+#include "Particle3D/CCParticle3DEmitter.h"
+#include "Particle3D/CCParticle3DAffector.h"
+#include "Particle3D/CCParticle3DRender.h"
+#include "Particle3D/ParticleUniverse/ParticleRenders/CCPUParticle3DRender.h"
+#include "Particle3D/ParticleUniverse/ParticleEmitters/CCPUParticle3DPointEmitter.h"
+#include "Particle3D/ParticleUniverse/ParticleEmitters/CCPUParticle3DBoxEmitter.h"
+#include "Particle3D/ParticleUniverse/ParticleEmitters/CCPUParticle3DCircleEmitter.h"
+#include "Particle3D/ParticleUniverse/ParticleEmitters/CCPUParticle3DLineEmitter.h"
+#include "Particle3D/ParticleUniverse/ParticleEmitters/CCPUParticle3DPositionEmitter.h"
+#include "Particle3D/ParticleUniverse/ParticleEmitters/CCPUParticle3DSphereSurfaceEmitter.h"
+#include "Particle3D/ParticleUniverse/ParticleAffectors/CCPUParticle3DAlignAffector.h"
+#include "Particle3D/ParticleUniverse/ParticleAffectors/CCPUParticle3DBoxCollider.h"
+#include "Particle3D/ParticleUniverse/ParticleAffectors/CCPUParticle3DColorAffector.h"
+#include "Particle3D/ParticleUniverse/ParticleAffectors/CCPUParticle3DGravityAffector.h"
+#include "Particle3D/ParticleUniverse/ParticleAffectors/CCPUParticle3DScaleAffector.h"
+#include "Particle3D/ParticleUniverse/ParticleAffectors/CCPUParticle3DFlockCenteringAffector.h"
+#include "Particle3D/ParticleUniverse/ParticleAffectors/CCPUParticle3DForceFieldAffector.h"
+#include "Particle3D/ParticleUniverse/ParticleAffectors/CCPUParticle3DLinearForceAffector.h"
+#include "Particle3D/ParticleUniverse/ParticleAffectors/CCPUParticle3DParticleFollower.h"
+#include "Particle3D/ParticleUniverse/ParticleAffectors/CCPUParticle3DPathFollower.h"
+#include "Particle3D/ParticleUniverse/ParticleAffectors/CCPUParticle3DPlaneCollider.h"
+#include "Particle3D/ParticleUniverse/ParticleAffectors/CCPUParticle3DRandomiser.h"
+#include "Particle3D/ParticleUniverse/ParticleAffectors/CCPUParticle3DSineForceAffector.h"
+#include "Particle3D/ParticleUniverse/ParticleAffectors/CCPUParticle3DTextureRotator.h"
+#include "Particle3D/ParticleUniverse/ParticleAffectors/CCPUParticle3DVortexAffector.h"
+#include "Particle3D/ParticleUniverse/CCPUParticleSystem3D.h"
+#include "Particle3D/ParticleUniverse/CCPUParticle3DScriptCompiler.h"
+
+
 
 Scene* ModelViewer::createScene(const std::string &filePath)
 {
+
+    //add search path for the Particle
+    FileUtils::getInstance()->addSearchPath("materials");
+    FileUtils::getInstance()->addSearchPath("scripts");
+
     // 'scene' is an autorelease object
     auto scene = Scene::create();
 
     // 'layer' is an autorelease object
     auto layer = ModelViewer::create();
-    layer->loadModel(filePath);
+    layer->loadModelOrParticle(filePath);
     layer->setCamera();
     layer->resetCamera();
 
@@ -50,37 +85,17 @@ bool ModelViewer::init()
     return true;
 }
 
-void ModelViewer::loadModel( const std::string &filePath )
+void ModelViewer::loadModelOrParticle( const std::string &filePath )
 {
-    Sprite3D *sprite = Sprite3D::create(filePath);
-    if (sprite)
+    char extension [32];
+    getFileExtension(filePath.c_str(),extension);
+    if(strcmp(extension,"c3b")==0 ||strcmp(extension,"c3t")==0 )
     {
-        auto animation = Animation3D::create(filePath);
-        if (animation)
-        {
-            auto animate = Animate3D::create(animation);
-            sprite->runAction(RepeatForever::create(animate));
-        }
-
-        AABB aabb = sprite->getAABB();
-        Vec3 corners[8];
-        aabb.getCorners(corners);
-        //temporary method, replace it
-        if (abs(corners[3].x) == 99999.0f && abs(corners[3].y) == 99999.0f && abs(corners[3].z) == 99999.0f)
-        {
-            _orginCenter = Vec3(0.0f, 0.0f, 0.0f);
-            _orginDistance = 100.0f;
-        }
-        else
-        {
-            float radius = (corners[0] - corners[5]).length();
-            _orginCenter = aabb.getCenter();
-            _orginDistance = radius;
-        }
-        sprite->setCameraMask((unsigned short)CameraFlag::USER1);
-        _layer->addChild(sprite);
+        loadModel(filePath);
+    }else if(strcmp(extension,"pu")==0 )
+    {
+        loadParticle(filePath);
     }
-
 }
 
 ModelViewer::ModelViewer()
@@ -235,4 +250,63 @@ void ModelViewer::setCamera()
     _camera->retain();
     _camera->setCameraMask((unsigned short)CameraFlag::USER1);
     _layer->addChild(_camera);
+}
+
+void ModelViewer::loadModel(const std::string &filePath)
+{
+    Sprite3D *sprite = Sprite3D::create(filePath);
+    if (sprite)
+    {
+        auto animation = Animation3D::create(filePath);
+        if (animation)
+        {
+            auto animate = Animate3D::create(animation);
+            sprite->runAction(RepeatForever::create(animate));
+        }
+
+        AABB aabb = sprite->getAABB();
+        Vec3 corners[8];
+        aabb.getCorners(corners);
+        //temporary method, replace it
+        if (abs(corners[3].x) == 99999.0f && abs(corners[3].y) == 99999.0f && abs(corners[3].z) == 99999.0f)
+        {
+            _orginCenter = Vec3(0.0f, 0.0f, 0.0f);
+            _orginDistance = 100.0f;
+        }
+        else
+        {
+            float radius = (corners[0] - corners[5]).length();
+            _orginCenter = aabb.getCenter();
+            _orginDistance = radius;
+        }
+        sprite->setCameraMask((unsigned short)CameraFlag::USER1);
+        _layer->addChild(sprite);
+    }
+
+}
+
+void ModelViewer::loadParticle(const std::string &filePath)
+{
+    auto rootps = PUParticleSystem3D::create(filePath);
+    rootps->setCameraMask((unsigned short)CameraFlag::USER1);
+    rootps->startParticleSystem();
+    _orginCenter = Vec3(0.0f, 0.0f, 0.0f);
+    _orginDistance = 50.0f;
+    _layer->addChild(rootps);
+}
+
+void ModelViewer::getFileExtension(const char *file_name,char *extension)
+{
+    int i=0,length;  
+    length=strlen(file_name);  
+    while(file_name[i])  
+    {  
+        if(file_name[i]=='.')  
+            break;  
+        i++;  
+    }  
+    if(i<length)  
+        strcpy(extension,file_name+i+1);  
+    else  
+        strcpy(extension,"\0");  
 }

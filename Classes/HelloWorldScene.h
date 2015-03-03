@@ -12,7 +12,7 @@ public:
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
     virtual bool init();  
 
-	void loadModel(const std::string &filePath);
+	void loadModelOrParticle(const std::string &filePath);
     void setCamera();
 
     // implement the "static create()" method manually
@@ -24,6 +24,9 @@ CC_CONSTRUCTOR_ACCESS:
 
 protected:
 
+    void loadModel(const std::string &filePath);
+    void loadParticle(const std::string &filePath);
+
     void onTouchsMovedThis(const std::vector<cocos2d::Touch*> &touchs, cocos2d::Event *event);
     void onMouseScrollThis(cocos2d::Event* event);
     void onMouseMovedThis(cocos2d::Event* event);
@@ -34,8 +37,7 @@ protected:
 
     void updateCameraTransform();
     void resetCamera();
-
-
+    void getFileExtension(const char *file_name,char *extension);
 private:
 
     cocos2d::Camera *_camera;

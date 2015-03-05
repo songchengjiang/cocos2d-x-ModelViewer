@@ -4,13 +4,23 @@
 
 USING_NS_CC;
 
-int main(int argc, char *argv[])
+int APIENTRY _tWinMain(HINSTANCE hInstance,
+                       HINSTANCE hPrevInstance,
+                       LPTSTR    lpCmdLine,
+                       int       nCmdShow)
 {
-    if (argc < 2) return -1;
-    std::string path = argv[1];
-    for (std::string::iterator iter = path.begin(); iter != path.end(); ++iter){
-        if (*iter == '\\') *iter = '/';
+    UNREFERENCED_PARAMETER(hPrevInstance);
+    UNREFERENCED_PARAMETER(lpCmdLine);
+
+    std::wstring cmdline(lpCmdLine);
+    std::string path;
+    for (auto iter : cmdline){
+        if (iter == '\\')
+            iter = '/';
+
+        path.push_back(iter);
     }
+    // create the application instance
     AppDelegate app(path);
     return Application::getInstance()->run();
 }

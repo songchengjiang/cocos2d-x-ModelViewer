@@ -35,9 +35,9 @@ USING_NS_CC;
 Scene* ModelViewer::createScene(const std::string &filePath)
 {
 
-    //add search path for the Particle
-    FileUtils::getInstance()->addSearchPath("materials");
-    FileUtils::getInstance()->addSearchPath("scripts");
+    ////add search path for the Particle
+    //FileUtils::getInstance()->addSearchPath("materials");
+    //FileUtils::getInstance()->addSearchPath("scripts");
 
     // 'scene' is an autorelease object
     auto scene = Scene::create();
